@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from '../lib/toast'
 import { chargerPhotos, verifierCode, ajouterPhoto, supprimerPhoto } from '../lib/galerie'
+import { CATEGORIES_GALERIE, categorieGalerie } from '../data/galerie'
 
 const CLE_CODE = 'cn_code_galerie'
 const lireCode = () => { try { return sessionStorage.getItem(CLE_CODE) || '' } catch { return '' } }
@@ -9,13 +10,14 @@ const ecrireCode = (c) => { try { c ? sessionStorage.setItem(CLE_CODE, c) : sess
 
 const champ = 'w-full px-3 py-2.5 rounded-lg border-2 border-slate-200 bg-white text-sm focus:outline-none focus:border-teal'
 
-export default function GestionGalerie() {
+export default function GestionGalerie({ categorieInitiale = '' }) {
   const [code, setCode] = useState(lireCode)
   const [codeOk, setCodeOk] = useState(() => Boolean(lireCode()))
   const [photos, setPhotos] = useState(null)
   const [erreurListe, setErreurListe] = useState('')
   const [selection, setSelection] = useState([])
   const [envoi, setEnvoi] = useState(false)
+  const [categorie, setCategorie] = useState(() => (categorieGalerie(categorieInitiale) ? categorieInitiale : ''))
   const apercus = useRef(new Set())
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function GestionGalerie() {
     const nouveaux = [...e.target.files].map((fichier) => {
       const apercu = URL.createObjectURL(fichier)
       apercus.current.add(apercu)
-      return { id: `${fichier.name}-${fichier.lastModified}-${Math.random()}`, fichier, apercu, legende: '', etat: 'attente', message: '' }
+      return { id: `${fichier.name}-${fichier.lastModified}-${Math.random()}`, fichier, apercu, categorie, legende: '', etat: 'attente', message: '' }
     })
     setSelection((sel) => [...sel, ...nouveaux])
     e.target.value = ''
@@ -65,7 +67,7 @@ export default function GestionGalerie() {
     for (const item of selection.filter((x) => x.etat !== 'ok')) {
       majItem(item.id, { etat: 'envoi', message: '' })
       try {
-        const photo = await ajouterPhoto(code, item.fichier, item.legende)
+        const photo = await ajouterPhoto(code, item.categorie, item.fichier, item.legende)
         setPhotos((p) => [photo, ...(p ?? [])])
         retirerDeSelection(item.id)
         reussies++
@@ -103,6 +105,7 @@ export default function GestionGalerie() {
   }
 
   const enAttente = selection.filter((x) => x.etat !== 'ok').length
+  const visibles = photos && (categorie ? photos.filter((p) => p.categorie === categorie) : photos)
 
   return (
     <div className="space-y-5">
@@ -113,11 +116,26 @@ export default function GestionGalerie() {
           <Link to="/galerie" className="text-sm font-semibold text-teal">Voir la galerie du site →</Link>
         </div>
 
-        <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-teal/40 bg-teal-light/30 hover:bg-teal-light/60 rounded-2xl p-8 cursor-pointer text-center transition-colors">
+        <p className="text-sm font-semibold text-slate-700 mb-2">1. Dans quelle catégorie ?</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5" role="radiogroup" aria-label="Catégorie des photos">
+          {CATEGORIES_GALERIE.map((c) => (
+            <button key={c.id} type="button" role="radio" aria-checked={categorie === c.id} onClick={() => setCategorie(c.id)}
+              className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 text-left text-sm font-semibold transition-colors ${
+                categorie === c.id ? 'border-teal bg-teal-light/60 text-teal-dark' : 'border-slate-200 text-slate-600 hover:border-teal'}`}>
+              <span className="text-lg">{c.emoji}</span>{c.label}
+            </button>
+          ))}
+        </div>
+
+        <p className="text-sm font-semibold text-slate-700 mb-2">2. Les photos</p>
+        <label className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl p-8 text-center transition-colors ${
+          categorie ? 'border-teal/40 bg-teal-light/30 hover:bg-teal-light/60 cursor-pointer' : 'border-slate-200 bg-slate-50 cursor-not-allowed opacity-60'}`}>
           <span className="text-4xl">📷</span>
-          <span className="font-bold text-teal-dark">Choisir des photos</span>
+          <span className="font-bold text-teal-dark">
+            {categorie ? `Ajouter des photos : ${categorieGalerie(categorie).label}` : "Choisissez d'abord une catégorie"}
+          </span>
           <span className="text-xs text-slate-500">Galerie du téléphone ou appareil photo · plusieurs à la fois · réduites automatiquement</span>
-          <input type="file" accept="image/*" multiple onChange={choisir} className="sr-only" />
+          <input type="file" accept="image/*" multiple onChange={choisir} disabled={!categorie} className="sr-only" />
         </label>
 
         {selection.length > 0 && (
@@ -128,7 +146,8 @@ export default function GestionGalerie() {
                   <img src={x.apercu} alt="" className="w-20 h-20 rounded-lg object-cover flex-shrink-0" />
                   <div className="flex-1 min-w-0">
                     <input value={x.legende} onChange={(e) => majItem(x.id, { legende: e.target.value })} maxLength={80} disabled={x.etat === 'envoi'}
-                      placeholder="Légende (ex. Bloc opératoire)" className={`${champ} py-2`} aria-label="Légende" />
+                      placeholder="Légende (facultatif)" className={`${champ} py-2`} aria-label="Légende" />
+                    <span className="block text-[11px] font-semibold text-teal mt-1">{categorieGalerie(x.categorie).emoji} {categorieGalerie(x.categorie).label}</span>
                     <div className="flex items-center justify-between mt-2 text-xs">
                       <span className={x.etat === 'erreur' ? 'text-red-600 font-semibold' : 'text-slate-400'}>
                         {x.etat === 'envoi' ? '⏳ Envoi…' : x.etat === 'erreur' ? x.message : 'Prête'}
@@ -151,17 +170,22 @@ export default function GestionGalerie() {
 
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm">
         <div className="flex items-center justify-between gap-3 p-4 border-b border-slate-200">
-          <strong className="text-blue-deep">Photos en ligne {photos && `(${photos.length})`}</strong>
+          <strong className="text-blue-deep">
+            Photos en ligne{categorie && ` · ${categorieGalerie(categorie).label}`} {visibles && `(${visibles.length})`}
+          </strong>
           <button onClick={() => { ecrireCode(''); setCode(''); setCodeOk(false) }} className="text-xs font-semibold text-slate-400 hover:text-blue-deep">Verrouiller</button>
         </div>
         {photos === null && <p className="p-8 text-center text-slate-400">Chargement…</p>}
-        {photos?.length === 0 && <p className="p-8 text-center text-slate-400">{erreurListe || 'Aucune photo pour le moment.'}</p>}
-        {photos?.length > 0 && (
+        {visibles?.length === 0 && <p className="p-8 text-center text-slate-400">{erreurListe || 'Aucune photo pour le moment.'}</p>}
+        {visibles?.length > 0 && (
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 p-4">
-            {photos.map((p) => (
+            {visibles.map((p) => (
               <li key={p.url} className="group relative">
                 <img src={p.url} alt={p.legende} loading="lazy" className="w-full aspect-square object-cover rounded-xl" />
                 <span className="block text-xs text-slate-500 mt-1 truncate">{p.legende || 'Sans légende'}</span>
+                {!categorie && (
+                  <span className="block text-[11px] font-semibold text-teal truncate">{categorieGalerie(p.categorie)?.label ?? 'Sans catégorie'}</span>
+                )}
                 <button onClick={() => supprimer(p)} aria-label={`Supprimer ${p.legende || 'la photo'}`}
                   className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 text-red-600 font-bold shadow hover:bg-red-50">✕</button>
               </li>

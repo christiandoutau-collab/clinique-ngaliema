@@ -1,10 +1,10 @@
 // ── PLATEAU TECHNIQUE ──────────────────────────────────────
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useReveal, revealRef } from '../hooks/useReveal'
 import SectionHeader from '../components/SectionHeader'
-import Visionneuse from '../components/Visionneuse'
 import { chargerPhotos } from '../lib/galerie'
+import { CATEGORIES_GALERIE } from '../data/galerie'
 import { PLATEAU_ITEMS } from '../data/content'
 
 export function Plateau() {
@@ -132,29 +132,20 @@ export function Nouvelles() {
 }
 
 // ── GALERIE ────────────────────────────────────────────────
-const VISUELS_PROVISOIRES = [
-  { label: 'Bâtiment principal',    from: 'from-blue-deep',   to: 'to-blue-mid',    emoji: '🏛️' },
-  { label: 'Salle de consultation', from: 'from-teal',        to: 'to-teal-dark',   emoji: '🩺' },
-  { label: 'Bloc opératoire',       from: 'from-blue-mid',    to: 'to-blue-bright', emoji: '🔦' },
-  { label: 'Laboratoire',           from: 'from-blue-bright', to: 'to-teal',        emoji: '🧪' },
-  { label: 'Salle de radiologie',   from: 'from-teal-dark',   to: 'to-blue-deep',   emoji: '📡' },
-  { label: "Accueil patients",      from: 'from-blue-deep',   to: 'to-blue-bright', emoji: '👋' },
-  { label: 'Pharmacie',             from: 'from-teal',        to: 'to-blue-mid',    emoji: '💊' },
-  { label: 'Pavillon chirurgie',    from: 'from-blue-bright', to: 'to-blue-deep',   emoji: '✂️' },
-]
-
 export function Galerie() {
   const heroRef = useReveal()
   const [photos, setPhotos] = useState(null) // null = chargement
-  const [ouverte, setOuverte] = useState(null)
-  const fermer = useCallback(() => setOuverte(null), [])
 
-  // Photos publiées par le personnel ; en cas d'échec, on garde les visuels provisoires
+  // Photos publiées par le personnel ; en cas d'échec, les tuiles gardent leur visuel par défaut
   useEffect(() => {
     chargerPhotos().then(setPhotos).catch(() => setPhotos([]))
   }, [])
 
-  const reelles = photos?.length > 0
+  // Pour chaque catégorie : nombre de photos et photo la plus récente (la liste arrive triée)
+  const parCategorie = (id) => {
+    const liste = photos?.filter((p) => p.categorie === id) ?? []
+    return { nombre: liste.length, couverture: liste[0] }
+  }
 
   return (
     <>
@@ -171,59 +162,38 @@ export function Galerie() {
       <section className="py-20 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4">
           <SectionHeader label="Nos installations" title="La Clinique Ngaliema en images" center />
-
-          {photos === null && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" aria-busy="true">
-              {Array.from({ length: 8 }, (_, i) => <div key={i} className="aspect-square rounded-2xl bg-slate-200 animate-pulse" />)}
-            </div>
-          )}
-
-          {reelles && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {photos.map((p, i) => (
-                <button key={p.url} onClick={() => setOuverte(i)} className="group relative aspect-square rounded-2xl overflow-hidden bg-slate-200 text-left">
-                  <img src={p.url} alt={p.legende || 'Photo de la clinique'} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  {p.legende && (
-                    <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent text-white text-xs sm:text-sm font-medium px-3 pt-8 pb-2.5">{p.legende}</span>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {CATEGORIES_GALERIE.map((c, i) => {
+              const { nombre, couverture } = parCategorie(c.id)
+              return (
+                <Link key={c.id} to={`/galerie/${c.id}`} ref={revealRef} style={{ transitionDelay: `${i * 60}ms` }}
+                  className="section-reveal group relative block aspect-square rounded-2xl overflow-hidden">
+                  {couverture ? (
+                    <>
+                      <img src={couverture.url} alt={c.label} loading="lazy" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                      <span className="absolute inset-x-0 bottom-0 p-3 text-white">
+                        <span className="block font-semibold text-sm sm:text-base leading-tight">{c.label}</span>
+                        <span className="block text-xs text-white/75 mt-0.5">{nombre} photo{nombre > 1 ? 's' : ''} →</span>
+                      </span>
+                    </>
+                  ) : (
+                    <span className={`absolute inset-0 bg-gradient-to-br ${c.from} ${c.to} flex flex-col items-center justify-center text-white group-hover:scale-105 transition-transform`}>
+                      <span className="text-5xl mb-3">{c.emoji}</span>
+                      <span className="text-xs sm:text-sm font-medium text-white/90 px-3 text-center">{c.label}</span>
+                      <span className="text-[11px] text-white/60 mt-1">Découvrir →</span>
+                    </span>
                   )}
-                </button>
-              ))}
-            </div>
-          )}
-          {reelles && (
-            <p className="mt-8 text-center">
-              <Link to="/galerie/gerer" className="text-xs font-semibold text-slate-400 hover:text-teal">📷 Gérer les photos (personnel)</Link>
-            </p>
-          )}
-
-          {photos?.length === 0 && (
-            <>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {VISUELS_PROVISOIRES.map((p, i) => (
-                  <div key={p.label} ref={revealRef} className="section-reveal group" style={{ transitionDelay: `${i * 60}ms` }}>
-                    <div className={`bg-gradient-to-br ${p.from} ${p.to} rounded-2xl flex flex-col items-center justify-center text-white aspect-square group-hover:scale-105 transition-transform`}>
-                      <span className="text-5xl mb-3">{p.emoji}</span>
-                      <span className="text-xs font-medium text-white/80 px-3 text-center">{p.label}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-12 text-center bg-white rounded-2xl p-8 border border-dashed border-slate-300">
-                <p className="text-4xl mb-3">📸</p>
-                <h3 className="font-bold text-blue-deep mb-2">Photos réelles à venir</h3>
-                <p className="text-slate-400 text-sm max-w-sm mx-auto">
-                  Les photos de la clinique seront bientôt publiées ici.
-                </p>
-                <Link to="/galerie/gerer" className="inline-block mt-4 text-sm font-semibold text-teal hover:text-teal-dark">
-                  Personnel : ajouter des photos →
                 </Link>
-              </div>
-            </>
-          )}
+              )
+            })}
+          </div>
+
+          <p className="mt-10 text-center">
+            <Link to="/galerie/gerer" className="text-xs font-semibold text-slate-400 hover:text-teal">📷 Gérer les photos (personnel)</Link>
+          </p>
         </div>
       </section>
-
-      {reelles && ouverte !== null && <Visionneuse photos={photos} index={ouverte} changer={setOuverte} fermer={fermer} />}
     </>
   )
 }

@@ -11,6 +11,7 @@ import MonRdv from './pages/MonRdv'
 import Personnel from './pages/Personnel'
 import Toaster from './components/Toaster'
 import GererGalerie from './pages/GererGalerie'
+import CategorieGalerie from './pages/CategorieGalerie'
 
 function Layout({ children }) {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/nouvelles"    element={<Nouvelles />} />
         <Route path="/galerie"      element={<Galerie />} />
         <Route path="/galerie/gerer" element={<GererGalerie />} />
+        <Route path="/galerie/:categorie" element={<CategorieGalerie />} />
         <Route path="/contacts"     element={<Contacts />} />
         <Route path="/rdv"          element={<RendezVous />} />
         <Route path="/mon-rdv"      element={<MonRdv />} />

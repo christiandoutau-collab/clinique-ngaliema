@@ -11,6 +11,7 @@ const MESSAGES = {
   'image-invalide': "Ce fichier n'est pas une image prise en charge (JPG, PNG ou WebP).",
   'image-trop-lourde': 'Image trop lourde, même après réduction.',
   'url-invalide': 'Photo introuvable.',
+  'categorie-invalide': 'Choisissez la catégorie de la photo.',
 }
 
 export class ErreurGalerie extends Error {
@@ -46,9 +47,9 @@ export async function verifierCode(code) {
   await appeler('POST', { code, action: 'verifier' })
 }
 
-export async function ajouterPhoto(code, fichier, legende) {
+export async function ajouterPhoto(code, categorie, fichier, legende) {
   const image = await reduireImage(fichier)
-  return (await appeler('POST', { code, image, legende })).photo
+  return (await appeler('POST', { code, categorie, image, legende })).photo
 }
 
 export async function supprimerPhoto(code, url) {
