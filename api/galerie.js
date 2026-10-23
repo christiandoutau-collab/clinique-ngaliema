@@ -5,7 +5,8 @@
 //   DELETE /api/galerie { code, url }           → supprime une photo
 //
 // Variables d'environnement (Vercel → Settings → Environment Variables) :
-//   BLOB_READ_WRITE_TOKEN : ajoutée automatiquement en connectant un store Blob au projet
+//   BLOB_STORE_ID (ou BLOB_READ_WRITE_TOKEN pour les anciens stores) : ajoutée automatiquement
+//                         en connectant un store Blob *public* au projet ; @vercel/blob s'authentifie seul
 //   CODE_GALERIE          : code secret que le personnel saisit pour gérer la galerie
 import { put, list, del } from '@vercel/blob'
 import { randomBytes, timingSafeEqual } from 'node:crypto'
@@ -56,7 +57,7 @@ async function listerPhotos() {
 }
 
 export default async function handler(req, res) {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  if (!process.env.BLOB_STORE_ID && !process.env.BLOB_READ_WRITE_TOKEN) {
     return res.status(503).json({ erreur: 'stockage-non-configure' })
   }
 
