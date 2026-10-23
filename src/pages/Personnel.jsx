@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useClinique } from '../hooks/useClinique'
 import { toast } from '../lib/toast'
+import GestionGalerie from '../components/GestionGalerie'
 import {
   CONFIG, POSTES, ROLES, STATUTS, PLAGES_CONSULT, TOUS_SERVICES, nomService, specialite, employe,
   posteDe, posteParDefaut, estSurcharge, alerteRepos, rdvActifs, definirPoste, changerStatut,
@@ -28,7 +29,7 @@ export default function Personnel() {
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <h1 className="font-display text-3xl text-blue-deep">Espace personnel</h1>
           <div className="inline-flex bg-white border border-slate-200 rounded-xl p-1 print:hidden" role="tablist">
-            {[['planning', 'Planning'], ['rdv', 'Rendez-vous'], ['equipe', 'Équipe']].map(([k, l]) => (
+            {[['planning', 'Planning'], ['rdv', 'Rendez-vous'], ['equipe', 'Équipe'], ['galerie', 'Galerie']].map(([k, l]) => (
               <button key={k} role="tab" aria-selected={onglet === k} onClick={() => setOnglet(k)}
                 className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${onglet === k ? 'bg-teal text-white' : 'text-slate-500 hover:text-blue-deep'}`}>{l}</button>
             ))}
@@ -38,6 +39,7 @@ export default function Personnel() {
         {onglet === 'planning' && <Planning />}
         {onglet === 'rdv' && <RdvDuJour />}
         {onglet === 'equipe' && <Equipe />}
+        {onglet === 'galerie' && <GestionGalerie />}
       </div>
     </section>
   )
