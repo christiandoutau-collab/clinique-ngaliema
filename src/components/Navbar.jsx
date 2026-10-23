@@ -99,6 +99,15 @@ export default function Navbar() {
         >
           📅 Prendre RDV
         </Link>
+        <Link
+          to="/personnel"
+          onClick={() => setOpen(false)}
+          className={`mt-2 px-5 py-2 rounded-xl border text-base font-medium transition-colors ${
+            pathname === '/personnel' ? 'border-teal text-teal' : 'border-white/25 text-white/80 hover:text-teal hover:border-teal'
+          }`}
+        >
+          🔒 Espace personnel
+        </Link>
       </div>
     </>
   )
