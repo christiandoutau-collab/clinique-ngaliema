@@ -5,7 +5,11 @@ import Footer from './components/Footer'
 import Accueil from './pages/Accueil'
 import Presentation from './pages/Presentation'
 import Services from './pages/Services'
-import { Plateau, Nouvelles, Galerie, Contacts, RDV } from './pages/OtherPages'
+import { Plateau, Nouvelles, Galerie, Contacts } from './pages/OtherPages'
+import RendezVous from './pages/RendezVous'
+import MonRdv from './pages/MonRdv'
+import Personnel from './pages/Personnel'
+import Toaster from './components/Toaster'
 
 function Layout({ children }) {
   return (
@@ -14,6 +18,7 @@ function Layout({ children }) {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <Toaster />
     </div>
   )
 }
@@ -29,7 +34,9 @@ export default function App() {
         <Route path="/nouvelles"    element={<Nouvelles />} />
         <Route path="/galerie"      element={<Galerie />} />
         <Route path="/contacts"     element={<Contacts />} />
-        <Route path="/rdv"          element={<RDV />} />
+        <Route path="/rdv"          element={<RendezVous />} />
+        <Route path="/mon-rdv"      element={<MonRdv />} />
+        <Route path="/personnel"    element={<Personnel />} />
         <Route path="*"             element={
           <div className="min-h-96 flex flex-col items-center justify-center text-center px-4">
             <p className="text-7xl mb-5">🏥</p>

@@ -47,6 +47,16 @@ export default function Footer() {
                   📅 Prendre un RDV
                 </Link>
               </li>
+              <li>
+                <Link to="/mon-rdv" className="text-sm hover:text-teal transition-colors">
+                  Mon rendez-vous (annuler, agenda)
+                </Link>
+              </li>
+              <li>
+                <Link to="/personnel" className="text-sm hover:text-teal transition-colors">
+                  🔒 Espace personnel
+                </Link>
+              </li>
             </ul>
           </div>
 
