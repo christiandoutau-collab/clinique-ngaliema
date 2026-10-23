@@ -190,6 +190,11 @@ export function Galerie() {
               ))}
             </div>
           )}
+          {reelles && (
+            <p className="mt-8 text-center">
+              <Link to="/galerie/gerer" className="text-xs font-semibold text-slate-400 hover:text-teal">📷 Gérer les photos (personnel)</Link>
+            </p>
+          )}
 
           {photos?.length === 0 && (
             <>
@@ -209,7 +214,7 @@ export function Galerie() {
                 <p className="text-slate-400 text-sm max-w-sm mx-auto">
                   Les photos de la clinique seront bientôt publiées ici.
                 </p>
-                <Link to="/personnel" className="inline-block mt-4 text-sm font-semibold text-teal hover:text-teal-dark">
+                <Link to="/galerie/gerer" className="inline-block mt-4 text-sm font-semibold text-teal hover:text-teal-dark">
                   Personnel : ajouter des photos →
                 </Link>
               </div>

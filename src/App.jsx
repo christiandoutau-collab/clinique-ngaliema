@@ -10,6 +10,7 @@ import RendezVous from './pages/RendezVous'
 import MonRdv from './pages/MonRdv'
 import Personnel from './pages/Personnel'
 import Toaster from './components/Toaster'
+import GererGalerie from './pages/GererGalerie'
 
 function Layout({ children }) {
   return (
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/plateau"      element={<Plateau />} />
         <Route path="/nouvelles"    element={<Nouvelles />} />
         <Route path="/galerie"      element={<Galerie />} />
+        <Route path="/galerie/gerer" element={<GererGalerie />} />
         <Route path="/contacts"     element={<Contacts />} />
         <Route path="/rdv"          element={<RendezVous />} />
         <Route path="/mon-rdv"      element={<MonRdv />} />
