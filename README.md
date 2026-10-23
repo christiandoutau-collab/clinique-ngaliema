@@ -1,34 +1,16 @@
-# Clinique Ngaliema — refonte du site
+# React + Vite
 
-Prototype modernisé du site de la Clinique Ngaliema (Kinshasa) avec :
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-- **Site public** : accueil, 14 spécialités avec recherche, infos patients & visiteurs, urgences, contact.
-- **Prise de rendez-vous en 4 étapes** : spécialité → médecin (ou « premier disponible ») → date & créneau → coordonnées.
-  - Les créneaux proposés dépendent **du planning réel des médecins** (un médecin en repos/congé n'est pas réservable).
-  - Confirmation immédiate avec code de réservation (`CN-XXXXX`), ajout à l'agenda (.ics), impression.
-  - Raccourci « prochains créneaux disponibles » sur l'accueil.
-- **Mon rendez-vous** : le patient retrouve ou annule son RDV avec son code et son téléphone (le créneau est libéré).
-- **Espace personnel** (code de démo : `1927`) :
-  - **Planning hebdomadaire** de tout le personnel (matin, après-midi, nuit, journée, garde 24 h, repos, congé), modifiable d'un clic.
-  - Rotation automatique par défaut, modifications manuelles signalées.
-  - Alertes : repos insuffisant après une nuit ou une garde, dépassement de 48 h/semaine, nuits sous-dotées (< 2 soignants).
-  - Filtres par fonction et service, export CSV, impression.
-  - **Rendez-vous du jour** : suivi du statut (confirmé, arrivé, terminé, absent, annulé), alerte si le médecin n'est plus planifié.
-  - **Équipe** : ajout et retrait de membres (les médecins ajoutés deviennent réservables).
+Currently, two official plugins are available:
 
-## Lancer
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-Aucune installation : ouvrir `index.html` dans un navigateur, ou servir le dossier :
+## React Compiler
 
-```bash
-npx serve clinique-ngaliema
-```
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## À savoir avant une mise en production
+## Expanding the ESLint configuration
 
-- Les **noms du personnel, les patients et les horaires** sont des données de démonstration : à remplacer
-  par les vraies données (constantes `CONFIG` et `EQUIPE_DEMO` en haut de `app.js`).
-- Les données sont stockées dans le **navigateur** (`localStorage`). Pour un usage réel sur plusieurs postes,
-  remplacer l'objet `db` de `app.js` par un backend (Supabase, API…) et l'accès par code par une vraie
-  authentification du personnel.
-- Les envois de SMS/e-mails de confirmation et de rappel ne sont pas branchés.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

@@ -1,234 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clinique Ngaliema — Kinshasa</title>
-  <meta name="description" content="Clinique Ngaliema, hôpital général provincial de référence à Kinshasa depuis 1927. Prenez rendez-vous en ligne en moins d'une minute." />
-  <meta name="theme-color" content="#0b6e6e" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b6e6e'/%3E%3Cpath d='M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z' fill='white'/%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <a class="skip" href="#main">Aller au contenu</a>
-
-  <div class="urgence-bar">
-    <div class="wrap">
-      <span><span class="pulse"></span> Urgences &amp; ambulance 24h/24 — 7j/7</span>
-      <a href="tel:+243810044920" data-tel="urgence"><strong>+243 810 044 920</strong></a>
-    </div>
-  </div>
-
-  <header class="header">
-    <div class="wrap header-in">
-      <a href="#/" class="brand" aria-label="Clinique Ngaliema — accueil">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 32 32"><path d="M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z" fill="currentColor"/></svg>
-        </span>
-        <span class="brand-txt"><strong>Clinique Ngaliema</strong><small>Kinshasa · depuis 1927</small></span>
-      </a>
-      <button class="burger" aria-label="Menu" aria-expanded="false" data-burger><span></span><span></span><span></span></button>
-      <nav class="nav" data-nav>
-        <a href="#/" data-goto="services">Services</a>
-        <a href="#/" data-goto="patients">Patients &amp; visiteurs</a>
-        <a href="#/" data-goto="apropos">La clinique</a>
-        <a href="#/" data-goto="contact">Contact</a>
-        <a href="#/mon-rdv">Mon rendez-vous</a>
-        <a href="#/personnel" class="nav-staff">Espace personnel</a>
-        <a href="#/rdv" class="btn btn-primary btn-sm">Prendre rendez-vous</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="main">
-    <!-- ============ ACCUEIL ============ -->
-    <section class="view" data-view="accueil">
-      <div class="hero">
-        <div class="wrap hero-in">
-          <div class="hero-txt">
-            <span class="eyebrow">Hôpital Général Provincial de Référence</span>
-            <h1>Des soins de qualité, <span class="accent">un rendez-vous en 1 minute.</span></h1>
-            <p class="lead">Au service des Kinois et des visiteurs depuis 1927. Choisissez votre spécialité, votre médecin et votre créneau : nous vous confirmons tout de suite.</p>
-            <div class="hero-cta">
-              <a href="#/rdv" class="btn btn-primary btn-lg">Prendre rendez-vous</a>
-              <a href="tel:+243810044920" class="btn btn-ghost btn-lg">Appeler la clinique</a>
-            </div>
-            <ul class="hero-stats">
-              <li><strong>1927</strong><span>au service de Kinshasa</span></li>
-              <li><strong>14</strong><span>spécialités</span></li>
-              <li><strong>24/7</strong><span>urgences &amp; ambulance</span></li>
-            </ul>
-          </div>
-          <aside class="hero-card" aria-live="polite">
-            <div class="hero-card-head">
-              <span class="dot-live"></span> Prochains créneaux disponibles
-            </div>
-            <ul class="next-slots" data-next-slots></ul>
-            <a href="#/rdv" class="btn btn-primary btn-block">Voir toutes les disponibilités</a>
-          </aside>
-        </div>
-      </div>
-
-      <section class="section" id="services">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="eyebrow">Consultations</span>
-            <h2>Nos services</h2>
-            <p>Cliquez sur une spécialité pour réserver directement.</p>
-          </div>
-          <div class="search-box">
-            <input type="search" placeholder="Rechercher une spécialité (ex. pédiatrie, yeux, dents…)" data-service-search aria-label="Rechercher une spécialité" />
-          </div>
-          <div class="services-grid" data-services-grid></div>
-        </div>
-      </section>
-
-      <section class="section section-alt" id="patients">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="eyebrow">Patients &amp; visiteurs</span>
-            <h2>Préparer votre venue</h2>
-          </div>
-          <div class="info-grid">
-            <article class="info-card">
-              <h3>Le jour de la consultation</h3>
-              <ul class="checklist">
-                <li>Arrivez 15 minutes avant l'heure du rendez-vous</li>
-                <li>Pièce d'identité et code de réservation</li>
-                <li>Ordonnances et traitements en cours</li>
-                <li>Résultats d'examens récents (analyses, imagerie)</li>
-                <li>Carte d'assurance ou prise en charge employeur</li>
-              </ul>
-            </article>
-            <article class="info-card">
-              <h3>Horaires</h3>
-              <dl class="hours" data-hours></dl>
-            </article>
-            <article class="info-card info-card-urgent">
-              <h3>Urgence ?</h3>
-              <p>Ne prenez pas rendez-vous en ligne. Présentez-vous directement au service des urgences ou appelez&nbsp;:</p>
-              <a class="big-tel" href="tel:+243810044920">+243 810 044 920</a>
-              <a class="big-tel" href="tel:+243815293268">+243 815 293 268</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="apropos">
-        <div class="wrap about">
-          <div>
-            <span class="eyebrow">La clinique</span>
-            <h2>Un établissement public de référence, au cœur de la Gombe</h2>
-            <p>Fondée en 1927, la Clinique Ngaliema est un établissement de service public qui accueille les habitants de Kinshasa comme les visiteurs étrangers. Elle s'est engagée dans une démarche d'amélioration continue de la qualité, avec une équipe dédiée.</p>
-            <ul class="features">
-              <li><strong>Médecins qualifiés</strong><span>Spécialistes dans 14 disciplines</span></li>
-              <li><strong>Service d'urgences</strong><span>Ouvert jour et nuit</span></li>
-              <li><strong>Examens fiables</strong><span>Laboratoire et imagerie sur place</span></li>
-              <li><strong>Ambulance</strong><span>Disponible 24h/24</span></li>
-            </ul>
-          </div>
-          <div class="about-visual" aria-hidden="true">
-            <div class="about-year">1927</div>
-            <div class="about-caption">Près d'un siècle de soins à Kinshasa</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-alt" id="contact">
-        <div class="wrap">
-          <div class="section-head">
-            <span class="eyebrow">Contact</span>
-            <h2>Nous trouver</h2>
-          </div>
-          <div class="contact-grid">
-            <div class="contact-card">
-              <h3>Adresse</h3>
-              <p>Avenue Papa Ileo (ex-avenue des Cliniques)<br />Commune de la Gombe, Kinshasa<br />République Démocratique du Congo<br />B.P. 3089</p>
-              <a class="btn btn-ghost btn-sm" target="_blank" rel="noopener" href="https://www.openstreetmap.org/search?query=Clinique%20Ngaliema%20Kinshasa">Ouvrir le plan</a>
-            </div>
-            <div class="contact-card">
-              <h3>Téléphone</h3>
-              <p><a href="tel:+243810044920">+243 810 044 920</a><br /><a href="tel:+243815293268">+243 815 293 268</a></p>
-              <h3>E-mail</h3>
-              <p><a href="mailto:contact@cliniquengaliema.org">contact@cliniquengaliema.org</a></p>
-            </div>
-            <div class="contact-card">
-              <h3>Réseaux</h3>
-              <p><a target="_blank" rel="noopener" href="https://www.facebook.com/clinique.ngaliema">facebook.com/clinique.ngaliema</a></p>
-              <a href="#/rdv" class="btn btn-primary btn-sm">Prendre rendez-vous</a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </section>
-
-    <!-- ============ PRISE DE RDV ============ -->
-    <section class="view" data-view="rdv" hidden>
-      <div class="wrap narrow">
-        <div class="booking">
-          <div class="booking-head">
-            <h1>Prendre rendez-vous</h1>
-            <p>4 étapes rapides — aucune inscription nécessaire.</p>
-          </div>
-          <ol class="stepper" data-stepper>
-            <li data-step-ind="1"><span>1</span>Spécialité</li>
-            <li data-step-ind="2"><span>2</span>Médecin</li>
-            <li data-step-ind="3"><span>3</span>Date &amp; heure</li>
-            <li data-step-ind="4"><span>4</span>Vos infos</li>
-          </ol>
-          <div class="booking-summary" data-summary></div>
-          <div class="booking-body" data-booking-body></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ MON RDV ============ -->
-    <section class="view" data-view="mon-rdv" hidden>
-      <div class="wrap narrow">
-        <div class="panel">
-          <h1>Mon rendez-vous</h1>
-          <p class="muted">Retrouvez, téléchargez ou annulez votre rendez-vous avec votre code de réservation.</p>
-          <form class="form" data-lookup-form>
-            <div class="field-row">
-              <label class="field"><span>Code de réservation</span>
-                <input name="code" required placeholder="CN-XXXXX" autocomplete="off" style="text-transform:uppercase" /></label>
-              <label class="field"><span>Téléphone utilisé</span>
-                <input name="tel" required type="tel" placeholder="+243 …" /></label>
-            </div>
-            <button class="btn btn-primary" type="submit">Rechercher</button>
-          </form>
-          <div data-lookup-result></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ ESPACE PERSONNEL ============ -->
-    <section class="view" data-view="personnel" hidden>
-      <div class="wrap wide" data-staff-root></div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap footer-in">
-      <div>
-        <strong>Clinique Ngaliema</strong>
-        <p>Hôpital Général Provincial de Référence · Kinshasa, RDC</p>
-      </div>
-      <div class="footer-links">
-        <a href="#/rdv">Prendre RDV</a>
-        <a href="#/mon-rdv">Mon rendez-vous</a>
-        <a href="#/personnel">Espace personnel</a>
-      </div>
-      <p class="footer-copy">© 1927–<span data-year></span> Clinique Ngaliema</p>
-    </div>
-  </footer>
-
-  <div class="toast" role="status" aria-live="polite" data-toast></div>
-  <div class="popover" data-popover hidden></div>
-
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Clinique Ngaliema – Hôpital Général Provincial de Référence Secondaire à Kinshasa, RDCongo. Soins de qualité depuis 1927." />
+    <meta property="og:title" content="Clinique Ngaliema – Kinshasa, RDC" />
+    <meta property="og:description" content="Disponibilité et soins de qualité depuis 1927." />
+    <title>Clinique Ngaliema – Hôpital Général de Référence</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Hospital",
+      "name": "Clinique Ngaliema",
+      "description": "Hôpital Général Provincial de Référence Secondaire",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Avenue Papa ILEO, ex des Cliniques, C/ Gombe",
+        "addressLocality": "Kinshasa",
+        "addressCountry": "CD"
+      },
+      "telephone": "+243810044920",
+      "email": "contact@cliniquengaliema.org",
+      "foundingDate": "1927",
+      "url": "https://www.cliniquengaliema.org"
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
